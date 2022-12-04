@@ -8,11 +8,13 @@ use std::io::prelude::*;
 use crate::ex1::{exercise1_1, exercise1_2};
 use crate::ex2::{exercise2_1, exercise2_2};
 use crate::ex3::{exercise3_1, exercise3_2};
+use crate::ex4::{exercise4_1, exercise4_2};
 
 mod ex1;
 mod ex2;
 mod file_utils;
 mod ex3;
+mod ex4;
 
 macro_rules! add_one {
     ($input:expr) => {
@@ -35,6 +37,8 @@ fn main() {
                     "2.2" => { exercise2_2(); }
                     "3.1" => { exercise3_1(); }
                     "3.2" => { exercise3_2(); }
+                    "4.1" => { exercise4_1(); }
+                    "4.2" => { exercise4_2(); }
                     _ => {}
                 }
             }
