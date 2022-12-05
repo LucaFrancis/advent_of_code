@@ -2,8 +2,6 @@ use crate::file_utils::read_file;
 
 pub(crate) fn exercise1_1() {
     let text = read_file("../../inputs/1/input");
-
-
     let lines = text.split("\n");
     let mut elves: Vec<Vec<&str>> = Vec::new();
     let mut elf: Vec<&str> = Vec::new();
