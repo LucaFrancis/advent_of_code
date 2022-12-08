@@ -10,6 +10,7 @@ use crate::ex4::{exercise4_1, exercise4_2};
 use crate::ex5::{exercise5_1, exercise5_2};
 use crate::ex6::{exercise6_1, exercise6_2};
 use crate::ex7::{exercise7_1, exercise7_2};
+use crate::ex8::{exercise8_1, exercise8_2};
 
 mod ex1;
 mod ex2;
@@ -19,6 +20,7 @@ mod ex4;
 mod ex5;
 mod ex6;
 mod ex7;
+mod ex8;
 
 macro_rules! add_one {
     ($input:expr) => {
@@ -49,6 +51,8 @@ fn main() {
                     "6.2" => { exercise6_2(); }
                     "7.1" => { exercise7_1(); }
                     "7.2" => { exercise7_2(); }
+                    "8.1" => { exercise8_1(); }
+                    "8.2" => { exercise8_2(); }
                     _ => {}
                 }
             }

@@ -174,5 +174,4 @@ pub(crate) fn exercise7_2() {
 
 
     println!("{}", candidates.first().unwrap());
-
 }
