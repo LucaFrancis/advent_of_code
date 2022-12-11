@@ -4,6 +4,8 @@ use std::io;
 use std::io::prelude::*;
 
 use crate::ex1::{exercise1_1, exercise1_2};
+use crate::ex10::{exercise10_1, exercise10_2};
+use crate::ex11::{exercise11_1, exercise11_2};
 use crate::ex2::{exercise2_1, exercise2_2};
 use crate::ex3::{exercise3_1, exercise3_2};
 use crate::ex4::{exercise4_1, exercise4_2};
@@ -11,6 +13,7 @@ use crate::ex5::{exercise5_1, exercise5_2};
 use crate::ex6::{exercise6_1, exercise6_2};
 use crate::ex7::{exercise7_1, exercise7_2};
 use crate::ex8::{exercise8_1, exercise8_2};
+use crate::ex9::{exercise9_1, exercise9_2};
 
 mod ex1;
 mod ex2;
@@ -21,6 +24,9 @@ mod ex5;
 mod ex6;
 mod ex7;
 mod ex8;
+mod ex9;
+mod ex10;
+mod ex11;
 
 macro_rules! add_one {
     ($input:expr) => {
@@ -53,6 +59,12 @@ fn main() {
                     "7.2" => { exercise7_2(); }
                     "8.1" => { exercise8_1(); }
                     "8.2" => { exercise8_2(); }
+                    "9.1" => { exercise9_1(); }
+                    "9.2" => { exercise9_2(); }
+                    "10.1" => { exercise10_1(); }
+                    "10.2" => { exercise10_2(); }
+                    "11.1" => { exercise11_1(); }
+                    "11.2" => { exercise11_2(); }
                     _ => {}
                 }
             }
