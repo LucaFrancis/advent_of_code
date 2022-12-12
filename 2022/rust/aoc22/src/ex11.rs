@@ -1,5 +1,5 @@
-use std::cmp::Ordering::{Greater, Less};
 use crate::Exercise;
+use std::cmp::Ordering::{Greater, Less};
 
 use crate::file_utils::read_file;
 
@@ -25,7 +25,6 @@ struct Monkey {
     activity: ItemType,
 }
 
-
 fn exercise11_1() {
     let mut monkeys: Vec<Monkey> = Vec::new();
     for monkey in read_file("../../inputs/11/test").split("\n\n") {
@@ -35,9 +34,11 @@ fn exercise11_1() {
     monkeys = do_business(monkeys, true, 20, true);
     let mut monkey_business_levels: Vec<ItemType> = monkeys.iter().map(|m| m.activity).collect();
     monkey_business_levels.sort();
-    println!("Business Level: {}", monkey_business_levels.pop().unwrap() * monkey_business_levels.pop().unwrap());
+    println!(
+        "Business Level: {}",
+        monkey_business_levels.pop().unwrap() * monkey_business_levels.pop().unwrap()
+    );
 }
-
 
 fn construct_monkey(description: &str) -> Monkey {
     let mut id: Option<usize> = None;
@@ -50,10 +51,23 @@ fn construct_monkey(description: &str) -> Monkey {
     let activity: ItemType = 0;
     for line in description.split('\n') {
         if line.starts_with("Monkey") {
-            id = Some(line.split(' ').last().unwrap().trim_end_matches(':').parse().unwrap())
+            id = Some(
+                line.split(' ')
+                    .last()
+                    .unwrap()
+                    .trim_end_matches(':')
+                    .parse()
+                    .unwrap(),
+            )
         }
         if line.starts_with("  Starting items: ") {
-            current_items = line.split(": ").last().unwrap().split(", ").map(|s| s.parse().unwrap()).collect()
+            current_items = line
+                .split(": ")
+                .last()
+                .unwrap()
+                .split(", ")
+                .map(|s| s.parse().unwrap())
+                .collect()
         }
         if line.starts_with("  Operation: ") {
             let operation_value = line.split(' ').last().unwrap();
@@ -84,7 +98,12 @@ fn construct_monkey(description: &str) -> Monkey {
     }
 }
 
-fn do_business(mut monkeys: Vec<Monkey>, decrease_worry: bool, rounds: usize, verbose: bool) -> Vec<Monkey> {
+fn do_business(
+    mut monkeys: Vec<Monkey>,
+    decrease_worry: bool,
+    rounds: usize,
+    verbose: bool,
+) -> Vec<Monkey> {
     let prime_divisor = monkeys.iter().map(|m| m.divisible_test_value).product();
     for round in 1..rounds + 1 {
         for index in 0..monkeys.len() {
@@ -96,14 +115,23 @@ fn do_business(mut monkeys: Vec<Monkey>, decrease_worry: bool, rounds: usize, ve
         if round == 1 || round == 20 || round % 1000 == 0 {
             println!("== After round {} ==", round);
             for monkey in monkeys.clone() {
-                println!("Monkey {} inspected items {} times.", monkey.id, monkey.activity);
+                println!(
+                    "Monkey {} inspected items {} times.",
+                    monkey.id, monkey.activity
+                );
             }
         }
     }
     monkeys
 }
 
-fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verbose: bool, prime_divisor: ItemType) -> Vec<Monkey> {
+fn process_monkey(
+    monkeys: Vec<Monkey>,
+    index: usize,
+    decrease_worry: bool,
+    verbose: bool,
+    prime_divisor: ItemType,
+) -> Vec<Monkey> {
     let mut new_monkeys = monkeys.clone();
     for item in monkeys[index].current_items.iter() {
         if verbose {
@@ -112,16 +140,26 @@ fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verb
         let mut new_worry_level: ItemType;
         new_monkeys[index].activity += 1;
 
-        let operation_value: ItemType = if monkeys[index].value.is_none() { *item } else { monkeys[index].value.unwrap() };
+        let operation_value: ItemType = if monkeys[index].value.is_none() {
+            *item
+        } else {
+            monkeys[index].value.unwrap()
+        };
         if monkeys[index].operation == "*" {
             new_worry_level = (*item * operation_value) % prime_divisor;
             if verbose {
-                println!("    Worry level is multiplied by {} to {}.", operation_value, new_worry_level);
+                println!(
+                    "    Worry level is multiplied by {} to {}.",
+                    operation_value, new_worry_level
+                );
             }
         } else if monkeys[index].operation == "+" {
             new_worry_level = (*item + operation_value) % prime_divisor;
             if verbose {
-                println!("    Worry level increases by {} to {}.", operation_value, new_worry_level);
+                println!(
+                    "    Worry level increases by {} to {}.",
+                    operation_value, new_worry_level
+                );
             }
         } else {
             panic!()
@@ -130,25 +168,39 @@ fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verb
         if decrease_worry {
             new_worry_level /= 3;
             if verbose {
-                println!("    Monkey gets bored with item. Worry level is divided by 3 to {}.", new_worry_level);
+                println!(
+                    "    Monkey gets bored with item. Worry level is divided by 3 to {}.",
+                    new_worry_level
+                );
             }
         }
 
         let monkey_id = if new_worry_level % monkeys[index].divisible_test_value == 0 {
             if verbose {
-                println!("    Current worry level is divisible by {}.", monkeys[index].divisible_test_value);
+                println!(
+                    "    Current worry level is divisible by {}.",
+                    monkeys[index].divisible_test_value
+                );
             }
             monkeys[index].true_monkey_id
         } else {
             if verbose {
-                println!("    Current worry level is not divisible by {}.", monkeys[index].divisible_test_value);
+                println!(
+                    "    Current worry level is not divisible by {}.",
+                    monkeys[index].divisible_test_value
+                );
             }
             monkeys[index].false_monkey_id
         };
         if verbose {
-            println!("    Item with worry level {} is thrown to monkey {}.", new_worry_level, monkey_id);
+            println!(
+                "    Item with worry level {} is thrown to monkey {}.",
+                new_worry_level, monkey_id
+            );
         }
-        new_monkeys[monkey_id as usize].current_items.push(new_worry_level);
+        new_monkeys[monkey_id as usize]
+            .current_items
+            .push(new_worry_level);
     }
     new_monkeys[index].current_items = Vec::new();
     new_monkeys

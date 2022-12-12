@@ -1,6 +1,6 @@
+use crate::Exercise;
 use std::collections::{HashSet, VecDeque};
 use std::hash::Hash;
-use crate::Exercise;
 
 use crate::file_utils::read_file;
 
@@ -29,17 +29,15 @@ fn exercise6_1() {
             deq.push_back(char);
             deq.pop_front();
             marker_position += 1;
-
         }
         println!("{}", marker_position);
-    };
-
+    }
 }
 
 fn has_unique_elements<T>(iter: T) -> bool
-    where
-        T: IntoIterator,
-        T::Item: Eq + Hash,
+where
+    T: IntoIterator,
+    T::Item: Eq + Hash,
 {
     let mut uniq = HashSet::new();
     iter.into_iter().all(move |x| uniq.insert(x))
@@ -62,8 +60,7 @@ fn exercise6_2() {
             deq.push_back(char);
             deq.pop_front();
             marker_position += 1;
-
         }
         println!("{}", marker_position);
-    };
+    }
 }

@@ -1,5 +1,5 @@
-use crate::Exercise;
 use crate::file_utils::read_file;
+use crate::Exercise;
 
 pub(crate) fn get_ex4() -> Exercise {
     Exercise {
@@ -25,12 +25,13 @@ fn exercise4_1() {
         if is_fully_contained(s1_start, s1_end, s2_start, s2_end) {
             score += 1
         }
-    };
+    }
     println!("{}", score)
 }
 
 fn is_fully_contained(s1_start: i32, s1_end: i32, s2_start: i32, s2_end: i32) -> bool {
-    return (s1_end <= s2_end && s1_start >= s2_start) || (s2_end <= s1_end && s2_start >= s1_start);
+    return (s1_end <= s2_end && s1_start >= s2_start)
+        || (s2_end <= s1_end && s2_start >= s1_start);
 }
 
 fn is_overlap(s1_start: i32, s1_end: i32, s2_start: i32, s2_end: i32) -> bool {
@@ -53,6 +54,6 @@ fn exercise4_2() {
         if is_overlap(s1_start, s1_end, s2_start, s2_end) {
             score += 1
         }
-    };
+    }
     println!("{}", score)
 }

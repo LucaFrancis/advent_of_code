@@ -1,5 +1,5 @@
-use std::cmp::{max, min};
 use crate::Exercise;
+use std::cmp::{max, min};
 
 use crate::file_utils::read_file;
 
@@ -80,7 +80,9 @@ fn get_tail_position(head: (i32, i32), tail: (i32, i32)) -> (i32, i32) {
             (tail.0, tail.1 - 1)
         };
     }
-    if (x_distance == 2 && (y_distance == 1 || y_distance == 2)) || (y_distance == 2 && (x_distance == 1 || x_distance == 2)) {
+    if (x_distance == 2 && (y_distance == 1 || y_distance == 2))
+        || (y_distance == 2 && (x_distance == 1 || x_distance == 2))
+    {
         // Move diagonally
         return if head.0 < tail.0 {
             if head.1 < tail.1 {
@@ -118,7 +120,7 @@ fn get_head_position(head: (i32, i32), direction: &str) -> (i32, i32) {
             //RIGHT
             (head.0 + 1, head.1)
         }
-        &_ => { head }
+        &_ => head,
     }
 }
 
@@ -134,7 +136,11 @@ fn exercise9_2() {
         for _ in 0..steps.parse().unwrap() {
             head = get_head_position(head, direction);
             for tail_index in 0..tails.len() {
-                let previous = if tail_index == 0 { head } else { tails[tail_index - 1] };
+                let previous = if tail_index == 0 {
+                    head
+                } else {
+                    tails[tail_index - 1]
+                };
                 tails[tail_index] = get_tail_position(previous, tails[tail_index]);
                 if tail_index == tails.len() - 1 && !visited.contains(&tails[tail_index]) {
                     visited.push(tails[tail_index]);

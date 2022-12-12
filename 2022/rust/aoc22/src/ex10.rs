@@ -1,5 +1,5 @@
-use crate::Exercise;
 use crate::file_utils::read_file;
+use crate::Exercise;
 
 pub(crate) fn get_ex10() -> Exercise {
     Exercise {
@@ -39,7 +39,7 @@ fn update_ctr(position: i32, x: i32) -> i32 {
 }
 
 fn is_visible(position: i32, x: i32) -> bool {
-    vec![x-1, x, x+1].contains(&position)
+    vec![x - 1, x, x + 1].contains(&position)
 }
 
 fn update_position(position: i32) -> i32 {

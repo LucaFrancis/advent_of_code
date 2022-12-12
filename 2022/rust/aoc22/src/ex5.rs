@@ -1,5 +1,5 @@
-use regex::Regex;
 use crate::Exercise;
+use regex::Regex;
 
 use crate::file_utils::read_file;
 
@@ -35,7 +35,7 @@ fn exercise5_1() {
             });
             continue;
         }
-    };
+    }
 
     let mut new_stack: Vec<Vec<String>> = Vec::new();
     for mut stack in stacks {
@@ -43,9 +43,16 @@ fn exercise5_1() {
         new_stack.push(stack)
     }
     for instruction in instructions {
-        println!("Moving {} from {} to {}", instruction.amount, instruction.source, instruction.dest);
+        println!(
+            "Moving {} from {} to {}",
+            instruction.amount, instruction.source, instruction.dest
+        );
         for _ in 0..instruction.amount {
-            let value = new_stack.get_mut(instruction.source - 1).unwrap().pop().unwrap();
+            let value = new_stack
+                .get_mut(instruction.source - 1)
+                .unwrap()
+                .pop()
+                .unwrap();
             println!("Took {} from {}", value, instruction.source);
             let v = value.clone();
             new_stack[instruction.dest - 1].push(value);
@@ -60,7 +67,8 @@ fn exercise5_1() {
 }
 
 fn get_start_config_line(stacks: &mut Vec<Vec<String>>, line: &str) {
-    let seperated_lines = line.chars()
+    let seperated_lines = line
+        .chars()
         .enumerate()
         .flat_map(|(i, c)| {
             if i != 0 && i % 4 == 0 {
@@ -68,8 +76,8 @@ fn get_start_config_line(stacks: &mut Vec<Vec<String>>, line: &str) {
             } else {
                 None
             }
-                .into_iter()
-                .chain(std::iter::once(c))
+            .into_iter()
+            .chain(std::iter::once(c))
         })
         .collect::<String>();
     let containers = seperated_lines.split("|").collect::<Vec<&str>>();
@@ -79,11 +87,13 @@ fn get_start_config_line(stacks: &mut Vec<Vec<String>>, line: &str) {
         }
         let char = (**container).chars().nth(1).unwrap().to_string();
         if char != " " {
-            stacks.get_mut(index).unwrap().push((**container).chars().nth(1).unwrap().to_string())
+            stacks
+                .get_mut(index)
+                .unwrap()
+                .push((**container).chars().nth(1).unwrap().to_string())
         }
     }
 }
-
 
 fn exercise5_2() {
     let mut stacks: Vec<Vec<String>> = Vec::new();
@@ -103,7 +113,7 @@ fn exercise5_2() {
             });
             continue;
         }
-    };
+    }
 
     let mut new_stack: Vec<Vec<String>> = Vec::new();
     for mut stack in stacks {
@@ -111,10 +121,17 @@ fn exercise5_2() {
         new_stack.push(stack)
     }
     for instruction in instructions {
-        println!("Moving {} from {} to {}", instruction.amount, instruction.source, instruction.dest);
+        println!(
+            "Moving {} from {} to {}",
+            instruction.amount, instruction.source, instruction.dest
+        );
         let mut values = Vec::new();
         for _ in 0..instruction.amount {
-            let value = new_stack.get_mut(instruction.source - 1).unwrap().pop().unwrap();
+            let value = new_stack
+                .get_mut(instruction.source - 1)
+                .unwrap()
+                .pop()
+                .unwrap();
             println!("Took {} from {}", value, instruction.source);
             values.push(value)
         }
