@@ -1,49 +1,59 @@
 use std::cmp::Ordering::{Greater, Less};
-use std::num::Wrapping;
+use crate::Exercise;
 
 use crate::file_utils::read_file;
 
+pub(crate) fn get_ex11() -> Exercise {
+    Exercise {
+        id: 11,
+        first_part: exercise11_1,
+        second_part: exercise11_2,
+    }
+}
+
+type ItemType = u64;
+
 #[derive(Clone)]
 struct Monkey {
-    id: u32,
-    current_items: Vec<Wrapping<u32>>,
+    id: usize,
+    current_items: Vec<ItemType>,
     operation: String,
-    value: Option<u32>,
-    divisible_test_value: u32,
+    value: Option<ItemType>,
+    divisible_test_value: ItemType,
     true_monkey_id: usize,
     false_monkey_id: usize,
-    activity: u32,
+    activity: ItemType,
 }
 
 
-pub(crate) fn exercise11_1() {
+fn exercise11_1() {
     let mut monkeys: Vec<Monkey> = Vec::new();
     for monkey in read_file("../../inputs/11/test").split("\n\n") {
         monkeys.push(construct_monkey(monkey))
     }
     monkeys.sort_by(|m, m2| if m.id < m2.id { Less } else { Greater });
     monkeys = do_business(monkeys, true, 20, true);
-    let mut monkey_business_levels: Vec<Wrapping<u32>> = monkeys.iter().map(|m| Wrapping(m.activity)).collect();
+    let mut monkey_business_levels: Vec<ItemType> = monkeys.iter().map(|m| m.activity).collect();
     monkey_business_levels.sort();
     println!("Business Level: {}", monkey_business_levels.pop().unwrap() * monkey_business_levels.pop().unwrap());
 }
 
 
 fn construct_monkey(description: &str) -> Monkey {
-    let mut id: Option<u32> = None;
-    let mut current_items: Vec<Wrapping<u32>> = Vec::new();
+    let mut id: Option<usize> = None;
+    let mut current_items: Vec<ItemType> = Vec::new();
     let mut operation: String = String::from("");
-    let mut value: Option<u32> = None;
-    let mut divisible_test_value: Option<u32> = None;
+    let mut value: Option<ItemType> = None;
+    let mut divisible_test_value: Option<ItemType> = None;
     let mut true_monkey_id: Option<usize> = None;
     let mut false_monkey_id: Option<usize> = None;
-    let activity: u32 = 0;
+    let activity: ItemType = 0;
     for line in description.split('\n') {
         if line.starts_with("Monkey") {
             id = Some(line.split(' ').last().unwrap().trim_end_matches(':').parse().unwrap())
         }
         if line.starts_with("  Starting items: ") {
-            current_items = line.split(": ").last().unwrap().split(", ").map(|s| Wrapping(s.parse().unwrap())).collect()
+            current_items = line.split(": ").last().unwrap().split(", ").map(|s| s.parse().unwrap()).collect()
         }
         if line.starts_with("  Operation: ") {
             let operation_value = line.split(' ').last().unwrap();
@@ -75,12 +85,13 @@ fn construct_monkey(description: &str) -> Monkey {
 }
 
 fn do_business(mut monkeys: Vec<Monkey>, decrease_worry: bool, rounds: usize, verbose: bool) -> Vec<Monkey> {
+    let prime_divisor = monkeys.iter().map(|m| m.divisible_test_value).product();
     for round in 1..rounds + 1 {
         for index in 0..monkeys.len() {
             if verbose {
                 println!("Monkey {}:", monkeys[index].id);
             }
-            monkeys = process_monkey(monkeys, index, decrease_worry, verbose)
+            monkeys = process_monkey(monkeys, index, decrease_worry, verbose, prime_divisor)
         }
         if round == 1 || round == 20 || round % 1000 == 0 {
             println!("== After round {} ==", round);
@@ -92,23 +103,23 @@ fn do_business(mut monkeys: Vec<Monkey>, decrease_worry: bool, rounds: usize, ve
     monkeys
 }
 
-fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verbose: bool) -> Vec<Monkey> {
+fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verbose: bool, prime_divisor: ItemType) -> Vec<Monkey> {
     let mut new_monkeys = monkeys.clone();
     for item in monkeys[index].current_items.iter() {
         if verbose {
             println!("  Monkey inspects an item with a worry level of {}.", item);
         }
-        let mut new_worry_level: Wrapping<u32>;
+        let mut new_worry_level: ItemType;
         new_monkeys[index].activity += 1;
 
-        let operation_value: Wrapping<u32> = if monkeys[index].value.is_none() { *item } else { Wrapping(monkeys[index].value.unwrap() as u32) };
+        let operation_value: ItemType = if monkeys[index].value.is_none() { *item } else { monkeys[index].value.unwrap() };
         if monkeys[index].operation == "*" {
-            new_worry_level = *item * operation_value;
+            new_worry_level = (*item * operation_value) % prime_divisor;
             if verbose {
                 println!("    Worry level is multiplied by {} to {}.", operation_value, new_worry_level);
             }
         } else if monkeys[index].operation == "+" {
-            new_worry_level = *item + operation_value;
+            new_worry_level = (*item + operation_value) % prime_divisor;
             if verbose {
                 println!("    Worry level increases by {} to {}.", operation_value, new_worry_level);
             }
@@ -123,7 +134,7 @@ fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verb
             }
         }
 
-        let monkey_id = if new_worry_level.0 % monkeys[index].divisible_test_value as u32 == 0 {
+        let monkey_id = if new_worry_level % monkeys[index].divisible_test_value == 0 {
             if verbose {
                 println!("    Current worry level is divisible by {}.", monkeys[index].divisible_test_value);
             }
@@ -143,14 +154,14 @@ fn process_monkey(monkeys: Vec<Monkey>, index: usize, decrease_worry: bool, verb
     new_monkeys
 }
 
-pub(crate) fn exercise11_2() {
+fn exercise11_2() {
     let mut monkeys: Vec<Monkey> = Vec::new();
-    for monkey in read_file("../../inputs/11/test").split("\n\n") {
+    for monkey in read_file("../../inputs/11/input").split("\n\n") {
         monkeys.push(construct_monkey(monkey))
     }
     monkeys.sort_by(|m, m2| if m.id < m2.id { Less } else { Greater });
     monkeys = do_business(monkeys, false, 10000, false);
-    let mut monkey_business_levels: Vec<Wrapping<u32>> = monkeys.iter().map(|m| Wrapping(m.activity)).collect();
+    let mut monkey_business_levels: Vec<ItemType> = monkeys.iter().map(|m| m.activity).collect();
     monkey_business_levels.sort();
     let best_activity = monkey_business_levels.pop().unwrap();
     let second_best_activity = monkey_business_levels.pop().unwrap();

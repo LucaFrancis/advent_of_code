@@ -1,6 +1,15 @@
+use crate::Exercise;
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise4_1() {
+pub(crate) fn get_ex4() -> Exercise {
+    Exercise {
+        id: 4,
+        first_part: exercise4_1,
+        second_part: exercise4_2,
+    }
+}
+
+fn exercise4_1() {
     let mut score: u32 = 0;
     for line in read_file("../../inputs/4/input").split("\n") {
         let jobs: Vec<&str> = line.split(",").collect();
@@ -28,7 +37,7 @@ fn is_overlap(s1_start: i32, s1_end: i32, s2_start: i32, s2_end: i32) -> bool {
     return s1_start <= s2_end && s2_start <= s1_end;
 }
 
-pub(crate) fn exercise4_2() {
+fn exercise4_2() {
     let mut score: u32 = 0;
     for line in read_file("../../inputs/4/input").split("\n") {
         let jobs: Vec<&str> = line.split(",").collect();

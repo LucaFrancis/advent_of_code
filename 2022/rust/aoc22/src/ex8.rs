@@ -1,8 +1,17 @@
 use std::cmp::max;
+use crate::Exercise;
 
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise8_1() {
+pub(crate) fn get_ex8() -> Exercise {
+    Exercise {
+        id: 8,
+        first_part: exercise8_1,
+        second_part: exercise8_2,
+    }
+}
+
+fn exercise8_1() {
     let mut trees: Vec<Vec<u32>> = Vec::new();
     for line in read_file("../../inputs/8/input").split('\n') {
         let mut treeline: Vec<u32> = vec!();
@@ -79,7 +88,7 @@ fn get_scenic_score_for_direction(height: u32, sight: Vec<u32>) -> i32 {
     sight_line
 }
 
-pub(crate) fn exercise8_2() {
+fn exercise8_2() {
     let mut trees: Vec<Vec<u32>> = Vec::new();
     for line in read_file("../../inputs/8/input").split('\n') {
         let mut treeline: Vec<u32> = vec!();

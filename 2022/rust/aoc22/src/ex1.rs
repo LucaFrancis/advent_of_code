@@ -1,6 +1,15 @@
+use crate::Exercise;
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise1_1() {
+pub(crate) fn get_ex1() -> Exercise {
+    Exercise {
+        id: 1,
+        first_part: exercise1_1,
+        second_part: exercise1_2,
+    }
+}
+
+fn exercise1_1() {
     let text = read_file("../../inputs/1/input");
     let lines = text.split("\n");
     let mut elves: Vec<Vec<&str>> = Vec::new();
@@ -27,13 +36,13 @@ pub(crate) fn exercise1_1() {
     println!("{}", summed_inventory[0])
 }
 
-pub(crate) fn exercise1_2() {
+fn exercise1_2() {
     let text = read_file("../../inputs/1/input");
     let lines = text.split("\n");
     let mut elves: Vec<Vec<&str>> = Vec::new();
     let mut elf: Vec<&str> = Vec::new();
     for line in lines {
-        if line == "" {
+        if line.is_empty() {
             elves.push(elf.clone());
             elf = Vec::new()
         } else {

@@ -1,6 +1,15 @@
 use regex::Regex;
+use crate::Exercise;
 
 use crate::file_utils::read_file;
+
+pub(crate) fn get_ex5() -> Exercise {
+    Exercise {
+        id: 5,
+        first_part: exercise5_1,
+        second_part: exercise5_2,
+    }
+}
 
 struct Instruction {
     amount: i32,
@@ -8,7 +17,7 @@ struct Instruction {
     dest: usize,
 }
 
-pub(crate) fn exercise5_1() {
+fn exercise5_1() {
     let mut stacks: Vec<Vec<String>> = Vec::new();
     let mut instructions: Vec<Instruction> = Vec::new();
     let re = Regex::new(r"(\d+)").unwrap();
@@ -76,7 +85,7 @@ fn get_start_config_line(stacks: &mut Vec<Vec<String>>, line: &str) {
 }
 
 
-pub(crate) fn exercise5_2() {
+fn exercise5_2() {
     let mut stacks: Vec<Vec<String>> = Vec::new();
     let mut instructions: Vec<Instruction> = Vec::new();
     let re = Regex::new(r"(\d+)").unwrap();

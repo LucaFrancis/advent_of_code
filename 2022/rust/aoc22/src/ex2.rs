@@ -1,8 +1,17 @@
 use std::collections::HashMap;
 
+use crate::Exercise;
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise2_1() {
+pub(crate) fn get_ex2() -> Exercise {
+    Exercise {
+        id: 2,
+        first_part: exercise2_1,
+        second_part: exercise2_2,
+    }
+}
+
+fn exercise2_1() {
     let mapping = HashMap::from([
         ("X", 1),
         ("Y", 2),
@@ -29,7 +38,7 @@ pub(crate) fn exercise2_1() {
     println!("{}", score)
 }
 
-pub(crate) fn exercise2_2() {
+fn exercise2_2() {
     let mapping = HashMap::from([
         ("X", 1),
         ("Y", 2),
@@ -64,5 +73,5 @@ fn get_score(enemy: i32, me: i32) -> i32 {
 
 fn get_action(enemy: i32, guide: i32) -> i32 {
     let index: usize = ((guide - 1) + (enemy + 1)).rem_euclid(3) as usize;
-    return [1,2,3][index];
+    return [1, 2, 3][index];
 }

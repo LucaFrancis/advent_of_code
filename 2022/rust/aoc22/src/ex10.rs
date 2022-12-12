@@ -1,6 +1,15 @@
+use crate::Exercise;
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise10_1() {
+pub(crate) fn get_ex10() -> Exercise {
+    Exercise {
+        id: 10,
+        first_part: exercise10_1,
+        second_part: exercise10_2,
+    }
+}
+
+fn exercise10_1() {
     let mut cycle: i32 = 1;
     let mut x: i32 = 1;
     let mut signal = 0;
@@ -49,7 +58,7 @@ fn get_signal(signal: i32, cycle: i32, x: i32) -> i32 {
     signal
 }
 
-pub(crate) fn exercise10_2() {
+fn exercise10_2() {
     let mut cycle: i32 = 1;
     let mut x: i32 = 1;
     let mut signal = 0;

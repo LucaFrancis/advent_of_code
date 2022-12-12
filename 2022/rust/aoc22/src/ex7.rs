@@ -1,7 +1,16 @@
 use std::cmp::max;
 use std::collections::HashMap;
+use crate::Exercise;
 
 use crate::file_utils::read_file;
+
+pub(crate) fn get_ex7() -> Exercise {
+    Exercise {
+        id: 7,
+        first_part: exercise7_1,
+        second_part: exercise7_2,
+    }
+}
 
 #[derive(Debug, Clone)]
 struct Directory {
@@ -12,7 +21,7 @@ struct Directory {
     depth: i32,
 }
 
-pub(crate) fn exercise7_1() {
+fn exercise7_1() {
     let mut directory: HashMap<String, Directory> = HashMap::new();
     directory.insert(String::from("/"), Directory {
         parent: String::from(""),
@@ -115,7 +124,7 @@ fn get_size_of_children(directory: HashMap<String, Directory>, name: String) -> 
     directory.iter().filter(|(_, dir)| dir.parent == name).map(|(_, dir)| dir.size).sum()
 }
 
-pub(crate) fn exercise7_2() {
+fn exercise7_2() {
     let mut directory: HashMap<String, Directory> = HashMap::new();
     directory.insert(String::from("/"), Directory {
         parent: String::from(""),

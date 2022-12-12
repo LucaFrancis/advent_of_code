@@ -2,18 +2,19 @@ extern crate core;
 
 use std::io;
 use std::io::prelude::*;
+use crate::ex10::get_ex10;
+use crate::ex11::get_ex11;
+use crate::ex12::get_ex12;
+use crate::ex1::get_ex1;
+use crate::ex2::get_ex2;
+use crate::ex3::get_ex3;
+use crate::ex4::get_ex4;
+use crate::ex5::get_ex5;
+use crate::ex6::get_ex6;
+use crate::ex7::get_ex7;
+use crate::ex8::get_ex8;
+use crate::ex9::get_ex9;
 
-use crate::ex1::{exercise1_1, exercise1_2};
-use crate::ex10::{exercise10_1, exercise10_2};
-use crate::ex11::{exercise11_1, exercise11_2};
-use crate::ex2::{exercise2_1, exercise2_2};
-use crate::ex3::{exercise3_1, exercise3_2};
-use crate::ex4::{exercise4_1, exercise4_2};
-use crate::ex5::{exercise5_1, exercise5_2};
-use crate::ex6::{exercise6_1, exercise6_2};
-use crate::ex7::{exercise7_1, exercise7_2};
-use crate::ex8::{exercise8_1, exercise8_2};
-use crate::ex9::{exercise9_1, exercise9_2};
 
 mod ex1;
 mod ex2;
@@ -27,45 +28,57 @@ mod ex8;
 mod ex9;
 mod ex10;
 mod ex11;
+mod ex12;
 
-macro_rules! add_one {
-    ($input:expr) => {
-        $input + 1
-    }
+pub(crate) struct Exercise {
+    id: i32,
+    first_part: fn() -> (),
+    second_part: fn() -> (),
 }
 
 fn main() {
-    println!("{}", add_one!(1));
+    let exercises = vec![
+        get_ex1(),
+        get_ex2(),
+        get_ex3(),
+        get_ex4(),
+        get_ex5(),
+        get_ex6(),
+        get_ex7(),
+        get_ex8(),
+        get_ex9(),
+        get_ex10(),
+        get_ex11(),
+        get_ex12()
+    ];
     let stdin = io::stdin();
     println!("Choose exercise (day.round, e.g. 2.1): ");
     let lines = stdin.lock();
     for line in lines.lines() {
         match line {
             Ok(line) => {
-                match line.as_str() {
-                    "1.1" => { exercise1_1(); }
-                    "1.2" => { exercise1_2(); }
-                    "2.1" => { exercise2_1(); }
-                    "2.2" => { exercise2_2(); }
-                    "3.1" => { exercise3_1(); }
-                    "3.2" => { exercise3_2(); }
-                    "4.1" => { exercise4_1(); }
-                    "4.2" => { exercise4_2(); }
-                    "5.1" => { exercise5_1(); }
-                    "5.2" => { exercise5_2(); }
-                    "6.1" => { exercise6_1(); }
-                    "6.2" => { exercise6_2(); }
-                    "7.1" => { exercise7_1(); }
-                    "7.2" => { exercise7_2(); }
-                    "8.1" => { exercise8_1(); }
-                    "8.2" => { exercise8_2(); }
-                    "9.1" => { exercise9_1(); }
-                    "9.2" => { exercise9_2(); }
-                    "10.1" => { exercise10_1(); }
-                    "10.2" => { exercise10_2(); }
-                    "11.1" => { exercise11_1(); }
-                    "11.2" => { exercise11_2(); }
-                    _ => {}
+                let split = line.split('.').collect::<Vec<&str>>();
+                if split.len() == 2 {
+                    let exercise: i32 = match split[0].parse() {
+                        Ok(s) => { s }
+                        Err(_) => { continue; }
+                    };
+                    let part: usize = match split[1].parse() {
+                        Ok(s) => { s }
+                        Err(_) => { continue; }
+                    };
+                    match exercises.iter().find(|e| e.id == exercise) {
+                        None => {}
+                        Some(ex) => {
+                            if part == 1 {
+                                (ex.first_part)()
+                            }
+                            if part == 2 {
+                                (ex.second_part)()
+                            }
+                            continue;
+                        }
+                    }
                 }
             }
             Err(why) => {

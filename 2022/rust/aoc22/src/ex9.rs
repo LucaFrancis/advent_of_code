@@ -1,8 +1,17 @@
 use std::cmp::{max, min};
+use crate::Exercise;
 
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise9_1() {
+pub(crate) fn get_ex9() -> Exercise {
+    Exercise {
+        id: 9,
+        first_part: exercise9_1,
+        second_part: exercise9_2,
+    }
+}
+
+fn exercise9_1() {
     let mut head = (0, 0);
     let mut tail = (0, 0);
     let mut visited: Vec<(i32, i32)> = Vec::new();
@@ -113,7 +122,7 @@ fn get_head_position(head: (i32, i32), direction: &str) -> (i32, i32) {
     }
 }
 
-pub(crate) fn exercise9_2() {
+fn exercise9_2() {
     let mut head = (0, 0);
     let mut tails = [(0, 0)].repeat(9);
     let mut visited: Vec<(i32, i32)> = Vec::new();

@@ -1,9 +1,18 @@
 use std::collections::{HashSet, VecDeque};
 use std::hash::Hash;
+use crate::Exercise;
 
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise6_1() {
+pub(crate) fn get_ex6() -> Exercise {
+    Exercise {
+        id: 6,
+        first_part: exercise6_1,
+        second_part: exercise6_2,
+    }
+}
+
+fn exercise6_1() {
     for line in read_file("../../inputs/6/input").split("\n") {
         let mut deq: VecDeque<char> = VecDeque::new();
         let mut marker_position = 4;
@@ -36,7 +45,7 @@ fn has_unique_elements<T>(iter: T) -> bool
     iter.into_iter().all(move |x| uniq.insert(x))
 }
 
-pub(crate) fn exercise6_2() {
+fn exercise6_2() {
     for line in read_file("../../inputs/6/input").split("\n") {
         let mut deq: VecDeque<char> = VecDeque::new();
         let mut marker_position = 14;

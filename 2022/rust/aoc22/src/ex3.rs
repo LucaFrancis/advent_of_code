@@ -1,6 +1,15 @@
+use crate::Exercise;
 use crate::file_utils::read_file;
 
-pub(crate) fn exercise3_1() {
+pub(crate) fn get_ex3() -> Exercise {
+    Exercise {
+        id: 3,
+        first_part: exercise3_1,
+        second_part: exercise3_2,
+    }
+}
+
+fn exercise3_1() {
     let mut score: u32 = 0;
     for line in read_file("../../inputs/3/input").split("\n") {
         let (first_inventory, second_inventory) = line.split_at(line.len() / 2);
@@ -17,7 +26,7 @@ pub(crate) fn exercise3_1() {
     println!("{}", score)
 }
 
-pub(crate) fn exercise3_2() {
+fn exercise3_2() {
     let mut score: u32 = 0;
     let file =  read_file("../../inputs/3/input");
     let inventories: Vec<&str> = file.split("\n").collect();
